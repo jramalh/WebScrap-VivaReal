@@ -1,0 +1,56 @@
+import pandas as pd
+df = pd.read_csv("banco_de_imoveis.csv")
+
+df.head()
+
+df.duplicated()
+
+sum(df.duplicated())
+
+df_sem_duplicados = df.drop_duplicates(keep="first", subset=[coluna for coluna in df.columns if coluna!="crawled_at"]).reset_index(drop=True)
+
+df_sem_duplicados[df_sem_duplicados["id"]=="1037345211"]
+
+df_sem_duplicados
+
+filtro_de_anuncios = [_id.isnumeric() for _id in df_sem_duplicados["id"]]
+
+df_sem_anuncios = df_sem_duplicados[filtro_de_anuncios].reset_index(drop=True)
+
+df_sem_anuncios.shape
+
+set(df_sem_anuncios["rooms
+
+set(df_sem_anuncios["rooms"].str.split(" ").str[0].str.replace("--","0"))
+
+df_sem_anuncios["rooms_limpo"] = 0
+df_sem_anuncios["rooms_limpo"] = (df_sem_anuncios["rooms"]
+                                         .str.replace(" Quarto","")
+                                         .str.replace("s","")
+                                         .str.replace("--","0")
+                                         .astype(int))
+
+set(df_sem_anuncios["bathrooms"])
+
+df_sem_anuncios["bathrooms_limpo"] = 0
+df_sem_anuncios["bathrooms_limpo"] = (df_sem_anuncios["bathrooms"]
+                                         .str.split(" ")
+                                         .str[0]
+                                         .str.replace("--","0")
+                                         .astype(int))
+                                         
+                                         
+set(df_sem_anuncios["garages"])         
+
+df_sem_anuncios["garages_limpo"] = 0
+df_sem_anuncios["garages_limpo"] = (df_sem_anuncios["garages"]
+                                    .str.split(" ")
+                                    .str[0]
+                                    .str.replace("--","0")
+                                    .astype(int))
+                     
+set(df_sem_anuncios["garages_limpo"])       
+set(df_sem_anuncios["price"])
+df_sem_anuncios["price_limpo"] = [int(w.split("R$ ")[1].replace(".","")) for w in df_sem_anuncios["price"]]
+df_sem_anuncios.loc[df_sem_anuncios["condo"].isnull(),"condo"] = 0
+df_sem_anuncios["condo_limpo"] = [int(w.split("R$ ")[1].replace(".","")) if w!=0 else 0 for w in df_sem_anuncios["condo"]]
